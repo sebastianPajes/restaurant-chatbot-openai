@@ -49,8 +49,11 @@
 }
 
 @media (max-width: 768px) {
+  #root {
+    padding: 0;
+  }
   .responsive-container {
-    height: 80vh;
+    height: calc(100vh - 20px);
     max-width: 100%;
   }
 }
