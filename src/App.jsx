@@ -63,8 +63,6 @@ function App() {
     const serverUrl = PROD_URL; // Replace with your server URL if different
 
     const apikey = import.meta.env.VITE_API_KEY
-
-    console.log(`api key: ${apikey}`)
   
     await fetch(`${import.meta.env.VITE_APP_API}api/internal/chatbot`,
       {
