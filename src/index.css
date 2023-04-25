@@ -30,7 +30,7 @@ body {
   justify-content: center; /* Alinear el contenedor del chat en el centro verticalmente */
   align-items: center; /* Alinear el contenedor del chat en el centro horizontalmente */
   min-width: 320px;
-  min-height: 90vh; /* Cambiar a 100vh para asegurar que el body ocupe toda la altura de la ventana */
+  min-height: 85vh; /* Cambiar a 100vh para asegurar que el body ocupe toda la altura de la ventana */
 }
 
 h1 {
