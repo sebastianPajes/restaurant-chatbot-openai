@@ -50,10 +50,10 @@
 
 @media (max-width: 768px) {
   #root {
-    padding: 0;
+    padding: 1rem;
   }
   .responsive-container {
-    height: calc(100vh - 20px);
+    height: 85vh;
     max-width: 100%;
   }
 }
