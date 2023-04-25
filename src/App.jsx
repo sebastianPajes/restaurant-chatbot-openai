@@ -86,24 +86,25 @@ function App() {
 
   return (
     <div className="App">
-      <div style={{ position:"relative", height: "800px", width: "700px"  }}>
+      <div className="responsive-container">
         <MainContainer>
-          <ChatContainer>       
-            <MessageList 
-              scrollBehavior="smooth" 
+          <ChatContainer>
+            <MessageList
+              scrollBehavior="smooth"
               typingIndicator={isTyping ? <TypingIndicator content="ChatGPT is typing" /> : null}
             >
               {messages.map((message, i) => {
-                console.log(message)
-                return <Message key={i} model={message} />
+                console.log(message);
+                return <Message key={i} model={message} />;
               })}
             </MessageList>
-            <MessageInput placeholder="Type message here" onSend={handleSend} />        
+            <MessageInput placeholder="Type message here" onSend={handleSend} />
           </ChatContainer>
         </MainContainer>
       </div>
     </div>
-  )
+  );
+  
 }
 
 export default App

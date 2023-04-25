@@ -40,3 +40,17 @@
 .read-the-docs {
   color: #888;
 }
+
+.responsive-container {
+  position: relative;
+  height: 800px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .responsive-container {
+    height: 90vh;
+    max-width: 100%;
+  }
+}
