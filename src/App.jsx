@@ -61,13 +61,17 @@ function App() {
     const PROD_URL = 'https://hy0fvhzmw7.execute-api.us-east-1.amazonaws.com/prod/api/internal/chatbot'
   
     const serverUrl = PROD_URL; // Replace with your server URL if different
+
+    const apikey = import.meta.env.VITE_API_KEY
+
+    console.log(`api key: ${apikey}`)
   
     await fetch(`${import.meta.env.VITE_APP_API}api/internal/chatbot`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": import.meta.env.VITE_INTERNAL_API_KEY
+          "x-api-key": apikey
         },
         body: JSON.stringify(apiRequestBody)
       }).then((data) => {
