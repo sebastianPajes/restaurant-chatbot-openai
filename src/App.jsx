@@ -3,16 +3,15 @@ import './App.css'
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from '@chatscope/chat-ui-kit-react';
 
-const API_KEY = "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";
-// "Explain things like you would to a 10 year old learning how to code."
-const systemMessage = { //  Explain things like you're talking to a software professional with 5 years of experience.
-  "role": "system", "content": "Explain things like you're talking to a software professional with 2 years of experience."
+const systemMessage = {
+  "role": "system", "content": `Eres un asistente amable y entusiasta encargado de dar recomendaciones a los usuarios basándote en el contexto proporcionado. Si consideras que el usuario no especificó sus preferencias o su pregunta no es muy precisa, hazle una pregunta adicional para comprender mejor sus preferencias o aclarar su consulta, y así puedas ofrecer una recomendación más acertada. 
+  El contexto te va a retornar paginas de mi base de datos y va a estar ordenada de forma descendente por similitud vectorial a la consulta. Los datos de un restaurante va a estar separado en paginas por lo que tendras que conectar la informacion basado en el 'Nombre' de cada pagina. Solo tienes permitido recomendar restaurantes que esten en las paginas que se te dan. Algo novedoso esq tenemos el tiempo de espera promedio de algunos restaurantes por dia`
 }
 
 function App() {
   const [messages, setMessages] = useState([
     {
-      message: "Hello, I'm ChatGPT! Ask me anything!",
+      message: "¡Hola! Estoy aquí para brindarte recomendaciones e información sobre los restaurantes que están en mi sistema. Recuerda que mientras más específico seas en tus gustos, podré ofrecerte respuestas más precisas. ¿En qué puedo ayudarte hoy? 😊",
       sentTime: "just now",
       sender: "ChatGPT"
     }
@@ -36,25 +35,21 @@ function App() {
     await processMessageToChatGPT(newMessages);
   };
 
-  async function processMessageToChatGPT(chatMessages) { // messages is an array of messages
+  async function processMessageToChatGPT(chatMessages) {
     // Format messages for chatGPT API
-    // API is expecting objects in format of { role: "user" or "assistant", "content": "message here"}
-    // So we need to reformat
-
-    let apiMessages = chatMessages.map((messageObject) => {
+    let apiMessages = chatMessages.slice(1).map((messageObject) => {
       let role = "";
       if (messageObject.sender === "ChatGPT") {
         role = "assistant";
       } else {
         role = "user";
       }
-      return { role: role, content: messageObject.message}
+      return { role: role, content: messageObject.message }
     });
-
-
+  
     // Get the request body set up with the model we plan to use
-    // and the messages which we formatted above. We add a system message in the front to'
-    // determine how we want chatGPT to act. 
+    // and the messages which we formatted above. We add a system message in the front to
+    // determine how we want chatGPT to act.
     const apiRequestBody = {
       "model": "gpt-3.5-turbo",
       "messages": [
@@ -63,24 +58,28 @@ function App() {
       ]
     }
 
-    await fetch("https://api.openai.com/v1/chat/completions", 
-    {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer " + API_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(apiRequestBody)
-    }).then((data) => {
-      return data.json();
-    }).then((data) => {
-      console.log(data);
-      setMessages([...chatMessages, {
-        message: data.choices[0].message.content,
-        sender: "ChatGPT"
-      }]);
-      setIsTyping(false);
-    });
+    const PROD_URL = 'https://hy0fvhzmw7.execute-api.us-east-1.amazonaws.com/prod/api/internal/chatbot'
+  
+    const serverUrl = PROD_URL; // Replace with your server URL if different
+  
+    await fetch(`${import.meta.env.VITE_APP_API}api/internal/chatbot`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": import.meta.env.VITE_INTERNAL_API_KEY
+        },
+        body: JSON.stringify(apiRequestBody)
+      }).then((data) => {
+        return data.json();
+      }).then((data) => {
+        console.log(data);
+        setMessages([...chatMessages, {
+          message: data.data.content,
+          sender: "ChatGPT"
+        }]);
+        setIsTyping(false);
+      });
   }
 
   return (
