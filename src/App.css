@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -50,10 +50,10 @@
 
 @media (max-width: 768px) {
   #root {
-    padding: 1rem;
+    padding: 0;
   }
   .responsive-container {
-    height: 90vh;
+    height: 100vh;
     max-width: 100%;
   }
 }
